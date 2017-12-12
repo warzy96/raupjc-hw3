@@ -29,7 +29,7 @@ namespace Zadatak_2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<ITodoRepository, TodoSqlRepository>();
-            services.AddTransient<TodoDbContext>(s => new TodoDbContext(Configuration["ConnectionString"]));
+            services.AddScoped(s => new TodoDbContext(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));

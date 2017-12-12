@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Zadatak_1.Exceptions;
-using Zadatak_2;
 
 namespace Zadatak_1.Interfaces
 {
