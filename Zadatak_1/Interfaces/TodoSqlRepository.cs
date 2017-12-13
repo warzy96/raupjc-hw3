@@ -31,7 +31,7 @@ namespace Zadatak_1.Interfaces
         {
             if(_context.TodoItems.Find(todoItem.Id) != null) 
                 throw new DuplicateTodoItemException
-                    ($"Duplicate id : {todoItem.Id}");
+                    ($"Duplicate id: {todoItem.Id}");
 
             _context.TodoItems.Add(todoItem);
         }
@@ -80,7 +80,7 @@ namespace Zadatak_1.Interfaces
         public List<TodoItem> GetAll(Guid userId)
         {
             return _context.TodoItems.Where(t => t.UserId.Equals(userId))
-                .OrderBy(t => t.DateCreated).ToList();
+                .OrderByDescending(t => t.DateCreated).ToList();
         }
 
         public List<TodoItem> GetActive(Guid userId)

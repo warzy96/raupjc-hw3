@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Zadatak_1
 {
@@ -42,12 +39,9 @@ namespace Zadatak_1
 
         public bool MarkAsCompleted()
         {
-            if(!IsCompleted)
-            {
-                DateCompleted = DateTime.Now;
-                return true;
-            }
-            return false;
+            if (IsCompleted) return false;
+            DateCompleted = DateTime.Now;
+            return true;
         }
 
         public override bool Equals(object obj)

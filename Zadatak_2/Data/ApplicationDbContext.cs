@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Zadatak_1;
 
 namespace Zadatak_2.Data
 {
@@ -21,5 +22,7 @@ namespace Zadatak_2.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+
+        public DbSet<Zadatak_1.TodoItem> TodoItem { get; set; }
     }
 }
