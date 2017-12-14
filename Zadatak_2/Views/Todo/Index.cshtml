@@ -1,8 +1,17 @@
-﻿@{
+﻿@using Zadatak_1
+@using Zadatak_2.Models
+@model IndexViewModel
+@{
     ViewData["Title"] = "Index";
 }
 <body>
-<h2>Todo</h2>
+    <h1>Todo</h1>
+    @foreach (TodoViewModel item in @Model.TodoList)
+     {
+         <h5>@item.Text</h5>
+         <h6>@item.DateDue</h6>
+         <!--<h6><a asp-controller="Todo" asp-action="MarkAsCompleted" asp-route-item="@item">Mark as completed</a></h6>-->
+    }
 </body>
 
 

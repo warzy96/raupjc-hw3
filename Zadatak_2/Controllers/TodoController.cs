@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Zadatak_1;
 using Zadatak_1.Interfaces;
 using Zadatak_2.Data;
 
@@ -29,5 +30,11 @@ namespace Zadatak_2.Controllers
             return View();
         }
 
+        [HttpGet("{item}")]
+        public IActionResult MarkAsCompleted(TodoItem item)
+        {
+            item.MarkAsCompleted();
+            return RedirectToAction("Index");
+        }
     }
 }
