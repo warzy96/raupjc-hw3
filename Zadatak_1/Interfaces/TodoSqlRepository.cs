@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using Zadatak_1.Exceptions;
 
 namespace Zadatak_1.Interfaces
@@ -14,6 +16,10 @@ namespace Zadatak_1.Interfaces
         }
 
 
+        public Task<List<TodoItemLabel>> GetLabels()
+        {
+            return _context.TodoItemLabels.ToListAsync();
+        }
         public TodoItem Get(Guid todoId, Guid userId)
         {
             var item = _context.TodoItems.Find(todoId);
@@ -32,8 +38,8 @@ namespace Zadatak_1.Interfaces
             if(_context.TodoItems.Find(todoItem.Id) != null) 
                 throw new DuplicateTodoItemException
                     ($"Duplicate id: {todoItem.Id}");
-
             _context.TodoItems.Add(todoItem);
+            _context.SaveChanges();
         }
 
         public bool Remove(Guid todoId, Guid userId)
@@ -47,6 +53,7 @@ namespace Zadatak_1.Interfaces
                     ("You do not have permission to remove this item!");
             
             _context.TodoItems.Remove(item);
+            _context.SaveChanges();
             return true;
         }
 
@@ -60,7 +67,6 @@ namespace Zadatak_1.Interfaces
                 Remove(todoItem.Id, userId);
             else throw new TodoAccessDeniedException
                 ("You do not have permission to update this item");
-
             Add(todoItem);
         }
 
@@ -70,31 +76,32 @@ namespace Zadatak_1.Interfaces
 
             if (item == null) return false;
 
-            if (item.UserId.Equals(userId))
-                return item.MarkAsCompleted();
-
-            throw new TodoAccessDeniedException
-                ("You do not have permission to make changes to this item");
+            if (!item.UserId.Equals(userId))
+                throw new TodoAccessDeniedException
+                    ("You do not have permission to make changes to this item");
+            var success = item.MarkAsCompleted();
+            _context.SaveChanges();
+            return success;
         }
 
-        public List<TodoItem> GetAll(Guid userId)
+        public async Task<List<TodoItem>> GetAll(Guid userId)
         {
-            return _context.TodoItems.Where(t => t.UserId.Equals(userId))
-                .OrderByDescending(t => t.DateCreated).ToList();
+            return await _context.TodoItems.Where(t => t.UserId.Equals(userId))
+                .OrderByDescending(t => t.DateCreated).ToListAsync();
         }
 
-        public List<TodoItem> GetActive(Guid userId)
+        public async Task<List<TodoItem>> GetActive(Guid userId)
         {
-            return _context.TodoItems.Where(t => !t.IsCompleted 
+            return await _context.TodoItems.Where(t => !t.DateCompleted.HasValue 
+                                            && t.UserId == userId)
+                                            .ToListAsync();
+        }
+
+        public async Task<List<TodoItem>> GetCompleted(Guid userId)
+        {
+            return await _context.TodoItems.Where(t => t.IsCompleted 
                                             && t.UserId.Equals(userId))
-                                            .ToList();
-        }
-
-        public List<TodoItem> GetCompleted(Guid userId)
-        {
-            return _context.TodoItems.Where(t => t.IsCompleted 
-                                            && t.UserId.Equals(userId))
-                                            .ToList();
+                                            .ToListAsync();
         }
 
         public List<TodoItem> GetFiltered(Func<TodoItem, bool> filterFunction, Guid userId)

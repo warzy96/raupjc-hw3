@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Zadatak_1.Interfaces
 {
@@ -60,19 +61,19 @@ namespace Zadatak_1.Interfaces
         /// <summary>
         /// Gets all TodoItem objects in database for user , sorted by date created(descending )
         /// </summary>
-        List<TodoItem> GetAll(Guid userId);
+        Task<List<TodoItem>> GetAll(Guid userId);
         
         
         /// <summary>
         /// Gets all incomplete TodoItem objects in database for user
         /// </summary>
-        List<TodoItem> GetActive(Guid userId);
+        Task<List<TodoItem>> GetActive(Guid userId);
         
         
         /// <summary>
         /// Gets all completed TodoItem objects in database for user
         /// </summary>
-        List<TodoItem> GetCompleted(Guid userId);
+        Task<List<TodoItem>> GetCompleted(Guid userId);
         
         
         /// <summary>

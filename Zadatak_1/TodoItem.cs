@@ -10,11 +10,27 @@ namespace Zadatak_1
         public List<TodoItemLabel> Labels { get; set; }
         public string Text { get; set; }
 
-        public bool IsCompleted => DateCompleted.HasValue;
+        public bool IsCompleted
+        {
+            get
+            {
+                return DateCompleted.HasValue;
+            }
+            set
+            {
+                
+            }
+        }
+
         public DateTime? DateCompleted { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime? DateDue { get; set; }
 
+        public TodoItem()
+        {
+            // entity framework needs this one 
+            // not for use
+        }
         public TodoItem(string text)
         {
             Id = Guid.NewGuid();
@@ -31,16 +47,10 @@ namespace Zadatak_1
             Labels = new List<TodoItemLabel>();
         }
 
-        public TodoItem()
-        {
-            // entity framework needs this one 
-            // not for use
-        }
-
         public bool MarkAsCompleted()
         {
             if (IsCompleted) return false;
-            DateCompleted = DateTime.Now;
+            DateCompleted = DateTime.UtcNow;
             return true;
         }
 
