@@ -4,6 +4,7 @@
     <UserSecretsId>aspnet-Zadatak_2-89408EC1-1188-44B1-82F9-98F6BA329950</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Bootstrap.Multiselect.Less" Version="0.9.9" />
     <PackageReference Include="EntityFramework" Version="6.2.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.0.1" />

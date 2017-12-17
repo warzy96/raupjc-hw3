@@ -31,15 +31,21 @@ namespace Zadatak_2.Controllers
         public async Task<IActionResult> Index()
         {
             ApplicationUser currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            IndexViewModel model = new IndexViewModel(await _repository.GetActive(new Guid(currentUser.Id)));
-            return View(model);
+            CombinedModel combined = new CombinedModel
+            {
+                IndexViewModel = new IndexViewModel(await _repository.GetActive(new Guid(currentUser.Id)))
+            };
+            return View(combined);
         }
 
         public async Task<IActionResult> Completed()
         {
             ApplicationUser currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            CompletedViewModel model = new CompletedViewModel(await _repository.GetCompleted(new Guid(currentUser.Id)));
-            return View(model);
+            CombinedModel combined = new CombinedModel
+            {
+                CompletedViewModel = new CompletedViewModel(await _repository.GetCompleted(new Guid(currentUser.Id)))
+            };
+            return View(combined);
         }
 
         public async Task<IActionResult> RemoveFromCompleted(TodoViewModel item)
@@ -63,9 +69,34 @@ namespace Zadatak_2.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
-            return View();
+            var model = new AddTodoViewModel(await _repository.GetLabels());
+            return View(model);
+        }
+
+        
+        [HttpPost]
+        public async Task<IActionResult> Add(AddTodoViewModel item)
+        {
+            if (ModelState.IsValid)
+            {
+                var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+                var storedLabels = await _repository.GetLabels();
+                var todoItem = new TodoItem(item.Text, new Guid(currentUser.Id))
+                {
+                    DateDue = item.DateDue
+                };
+                foreach (var asociatedLabel in  item.SelectedLabels)
+                {
+                    var label = storedLabels.Find(t => t.Value.Equals(asociatedLabel));
+                    if (label == null) continue;
+                    todoItem.Labels.Add(label);
+                }
+                _repository.Add(todoItem);
+                return RedirectToAction("Index");
+            }
+            return View(item);
         }
 
         public IActionResult Labels()
@@ -73,33 +104,27 @@ namespace Zadatak_2.Controllers
             return View();
         }
 
-
-        //TODO: Check if label is in database, use apropriate actions, add a drop down view in addView for user to chose created labels
         [HttpPost]
         public async Task<IActionResult> Labels(LabelsViewModel label)
         {
             if (ModelState.IsValid)
             {
-                var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-                var labels = await  _repository.GetLabels(new Guid(currentUser.Id));
-                TodoItemLabel addLabel = new TodoItemLabel(label.Value);
-                if(labels.Contains(addLabel))
+                var labels = await _repository.GetLabels();
+                var addLabel = new TodoItemLabel(label.Value)
+                {
+                    Id = Guid.NewGuid(),
+                    LabelTodoItems = label.LabelTodoItems
+                };
+                if (labels.Any(dbLabels => dbLabels.Value.Equals(addLabel.Value)))
+                {
+                    ModelState.AddModelError("ErrorMessage", "Label with the same name already exists!");
+                    return View(label);
+                }
+
+                _repository.AddLabel(addLabel);
                 return RedirectToAction("Add");
             }
             return View(label);
-        }
-        [HttpPost]
-        public async Task<IActionResult> Add(AddTodoViewModel item)
-        {
-            if (ModelState.IsValid)
-            {
-                var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-                var todoItem = new TodoItem(item.Text, new Guid(currentUser.Id))
-                                   { DateDue = item.DateDue};
-                _repository.Add(todoItem);
-                return RedirectToAction("Index");
-            }
-            return View(item);
         }
     }
 }

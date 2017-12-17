@@ -27,5 +27,7 @@ namespace Zadatak_2.Data
         public DbSet<Zadatak_1.TodoItem> TodoItem { get; set; }
 
         public DbSet<Zadatak_2.Models.LabelsViewModel> LabelsViewModel { get; set; }
+
+        public DbSet<Zadatak_2.Models.TodoViewModel> TodoViewModel { get; set; }
     }
 }

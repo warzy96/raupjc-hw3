@@ -83,9 +83,15 @@ namespace Zadatak_1.Interfaces
 
 
         /// <summary>
-        /// Gets all TodoItemLabels in database for user
+        /// Gets all TodoItemLabels in database
         /// </summary>
-        Task<List<TodoItemLabel>> GetLabels(Guid userId);
+        Task<List<TodoItemLabel>> GetLabels();
+
+        /// <summary>
+        /// Adds a label to the database
+        /// </summary>
+        /// <param name="label"></param>
+        void AddLabel(TodoItemLabel label);
 
     }
 }

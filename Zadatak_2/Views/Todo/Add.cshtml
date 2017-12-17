@@ -5,21 +5,36 @@
 }
 @model Models.AddTodoViewModel
 <html>
+
 <head>
     <title>Add TodoItem</title>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
 </head>
 <body>
 <div class="row">
-<div class="col-md-4">
-    <h1 style="margin-top: 1em">Add</h1>
-    <form asp-action="Add" method="post">
-        Name: <input asp-for="Text" class="form-control"/> <span asp-validation-for="Text"></span> <br/>
-        Date due: <input asp-for="DateDue" class="form-control"/> <span asp-validation-for="DateDue"></span> <br/>
-        <a asp-controller="Todo" asp-action="Labels">Add labels</a> <br/><br />
-
-        <input type="submit"/>
-    </form>
-</div>
+    <div class="col-md-4">
+        <h1 style="margin-top: 1em">Add</h1>
+        <form asp-action="Add" method="post">
+            Name: <input asp-for="Text" class="form-control"/> <span asp-validation-for="Text"></span> <br/>
+            Date due: <input asp-for="DateDue" class="form-control"/> <span asp-validation-for="DateDue"></span> <br/>
+            <a asp-controller="Todo" asp-action="Labels">Add labels</a> <br/><br/>
+            @foreach (var item in Model.Labels)
+            {
+            <span class="checkbox">
+                <label>
+                    <input type="checkbox"
+                           name="SelectedLabels"
+                           value="@item.Value" /> @item.Value
+                </label> 
+            </span>
+            }
+            <div class="form-group text-center">
+                <input type="submit" class="btn btn-primary" value="Submit" />
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 </html>

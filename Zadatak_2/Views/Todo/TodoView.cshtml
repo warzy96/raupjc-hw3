@@ -1,0 +1,38 @@
+﻿@using Models
+@model Zadatak_2.Models.CombinedModel
+
+<div>
+    <hr />
+    @if (Model.IndexViewModel != null)
+    {
+         foreach (var item in @Model.IndexViewModel.TodoList)
+         {
+             <span style="margin-top: 5em; margin-right: 5px"><b>@item.Text</b></span>
+             <span style="color: crimson"><b>@item.DaysUntilDeadline()</b></span>
+             if (item.DateDue != null)
+             {
+                 <br /> @item.DateDue.Value.Date.ToString("dd.MM.yyyy")
+             }
+             <br/>@Html.ActionLink("Mark as completed", "MarkAsCompleted", new { id = item.Id })
+             <br/><br />
+         }
+    }
+    @if (Model.CompletedViewModel != null)
+    {
+        <h1 style="margin-top: 1em; margin-bottom: 1em">Completed Todos</h1>
+         foreach (var item in @Model.CompletedViewModel.TodoCompletedList)
+         {
+             <span style="margin-top: 1em"><b>@item.Text</b></span>
+             if (item.DateCompleted != null)
+             {
+                 <br/>
+                 <span>@item.DateCompleted.Value.Date.ToString("dd.MM.yyyy")</span>
+             }
+             <br/>
+             <span>@Html.ActionLink("Remove from completed", "RemoveFromCompleted", item)</span>
+             <br/>
+             <br/>
+         }
+    }
+    
+</div>

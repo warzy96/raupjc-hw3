@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Zadatak_1
 {
@@ -71,15 +72,31 @@ namespace Zadatak_1
     public class TodoItemLabel
     {
         public Guid Id { get; set; }
+        [Required]
         public string Value { get; set; }
-        
         public List<TodoItem> LabelTodoItems { get; set; }
 
+        public TodoItemLabel()
+        {
+            LabelTodoItems = new List<TodoItem>();
+        }
         public TodoItemLabel(string value)
         {
             Id = Guid.NewGuid();
             Value = value;
             LabelTodoItems = new List<TodoItem>();
+        }
+
+        public static List<TodoItemLabel> ParseTodoItemLabels(string csv)
+        {
+            var itemLabels = new List<TodoItemLabel>();
+            string[] labels = csv.Split(',');
+            foreach (var label in labels)
+            {
+                if(label.Trim().Equals("")) continue;
+                itemLabels.Add(new TodoItemLabel(label));
+            }
+            return itemLabels;
         }
     }
 }

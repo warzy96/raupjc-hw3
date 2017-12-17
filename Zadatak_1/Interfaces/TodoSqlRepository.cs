@@ -16,7 +16,7 @@ namespace Zadatak_1.Interfaces
         }
 
 
-        public Task<List<TodoItemLabel>> GetLabels(Guid userId)
+        public Task<List<TodoItemLabel>> GetLabels()
         {
             return _context.TodoItemLabels.ToListAsync();
         }
@@ -108,6 +108,15 @@ namespace Zadatak_1.Interfaces
         {
             return _context.TodoItems.Where(filterFunction)
                 .Where(t => t.UserId.Equals(userId)).ToList();
+        }
+
+        public void AddLabel(TodoItemLabel label)
+        {
+            if (_context.TodoItemLabels.Find(label.Id) != null)
+                throw new DuplicateTodoItemException
+                    ($"Duplicate id: {label.Id}");
+            _context.TodoItemLabels.Add(label);
+            _context.SaveChanges();
         }
     }
 }

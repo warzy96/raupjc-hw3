@@ -2,7 +2,7 @@
     ViewData["Title"] = "Completed";
     Layout = "_Layout";
 }
-@model Models.CompletedViewModel
+@model Models.CombinedModel
 <!DOCTYPE html>
 
 <html>
@@ -10,22 +10,7 @@
     <title>Completed Todos</title>
 </head>
 <body>
-    <div>
-        <h1 style="margin-top: 1em; margin-bottom: 1em">Completed Todos</h1>
-        @foreach (var item in @Model.TodoCompletedList)
-        {
-            <span style="margin-top: 1em"><b>@item.Text</b></span>
-            if (item.DateCompleted != null)
-            {
-                <br/>
-                <span>@item.DateCompleted.Value.Date.ToString("dd.MM.yyyy")</span>
-            }
-            <br/>
-            <span>@Html.ActionLink("Remove from completed", "RemoveFromCompleted", item)</span>
-            <br/>
-            <br/>
-        }
-</div>
+        @Html.Partial("TodoView", Model)
 </body>
 </html>
 
