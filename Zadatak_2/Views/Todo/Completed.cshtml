@@ -14,11 +14,18 @@
         <h1 style="margin-top: 1em; margin-bottom: 1em">Completed Todos</h1>
         @foreach (var item in @Model.TodoCompletedList)
         {
-            <h5 style="margin-top: 1em"><b>@item.Text</b></h5>
-            <h6>@item.DateCompleted</h6>
-            @Html.ActionLink("Remove from completed", "RemoveFromCompleted",  item)
+            <span style="margin-top: 1em"><b>@item.Text</b></span>
+            if (item.DateCompleted != null)
+            {
+                <br/>
+                <span>@item.DateCompleted.Value.Date.ToString("dd.MM.yyyy")</span>
+            }
+            <br/>
+            <span>@Html.ActionLink("Remove from completed", "RemoveFromCompleted", item)</span>
+            <br/>
+            <br/>
         }
-    </div>
+</div>
 </body>
 </html>
 

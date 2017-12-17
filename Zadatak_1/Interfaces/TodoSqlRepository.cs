@@ -16,7 +16,7 @@ namespace Zadatak_1.Interfaces
         }
 
 
-        public Task<List<TodoItemLabel>> GetLabels()
+        public Task<List<TodoItemLabel>> GetLabels(Guid userId)
         {
             return _context.TodoItemLabels.ToListAsync();
         }

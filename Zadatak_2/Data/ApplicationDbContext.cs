@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Zadatak_1;
+using Zadatak_2.Models;
 
 namespace Zadatak_2.Data
 {
@@ -24,5 +25,7 @@ namespace Zadatak_2.Data
         }
 
         public DbSet<Zadatak_1.TodoItem> TodoItem { get; set; }
+
+        public DbSet<Zadatak_2.Models.LabelsViewModel> LabelsViewModel { get; set; }
     }
 }

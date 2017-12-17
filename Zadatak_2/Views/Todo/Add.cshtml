@@ -9,13 +9,17 @@
     <title>Add TodoItem</title>
 </head>
 <body>
-<div>
-    <h6></h6>
+<div class="row">
+<div class="col-md-4">
+    <h1 style="margin-top: 1em">Add</h1>
     <form asp-action="Add" method="post">
-        Name: <input asp-for="Text"/> <span asp-validation-for="Text"></span> <br/>
-        Date due: <input asp-for="DateDue"/> <span asp-validation-for="DateDue"></span> <br/>
+        Name: <input asp-for="Text" class="form-control"/> <span asp-validation-for="Text"></span> <br/>
+        Date due: <input asp-for="DateDue" class="form-control"/> <span asp-validation-for="DateDue"></span> <br/>
+        <a asp-controller="Todo" asp-action="Labels">Add labels</a> <br/><br />
+
         <input type="submit"/>
     </form>
+</div>
 </div>
 </body>
 </html>

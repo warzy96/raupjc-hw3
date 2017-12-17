@@ -80,5 +80,12 @@ namespace Zadatak_1.Interfaces
         /// Gets all TodoItem objects in database for user that apply to the filter
         /// </summary>
         List<TodoItem> GetFiltered (Func<TodoItem, bool> filterFunction, Guid userId) ;
+
+
+        /// <summary>
+        /// Gets all TodoItemLabels in database for user
+        /// </summary>
+        Task<List<TodoItemLabel>> GetLabels(Guid userId);
+
     }
 }

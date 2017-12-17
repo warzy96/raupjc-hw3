@@ -12,13 +12,19 @@
 </head>
 <body>
     <h1 style="margin-top: 1em">Todo</h1>
-    <a asp-controller="Todo" asp-action="Add" style="margin-right: 5em; margin-top: 10em; margin-bottom: 5em"><b>Add new todo</b></a>
-    <a asp-controller="Todo" asp-action="Completed" style="margin-top: 5em; margin-bottom: 5em"><b>   See completed todos</b></a>
+    <a asp-controller="Todo" asp-action="Add" style="margin-right: 5em; margin-top: 10em;"><b>Add new todo</b></a>
+    <a asp-controller="Todo" asp-action="Completed" style="margin-top: 5em"><b>   See completed todos</b></a>
+    <br/>
     @foreach (var item in @Model.TodoList)
     {
-        <h4 style="margin-top: 40px"><b>@item.Text</b></h4><p style="color: crimson"><b>@item.DaysUntilDeadline()</b></p>
-        <h6>@item.DateDue</h6>
-        <h6>@Html.ActionLink("Mark as completed", "MarkAsCompleted", new { id = item.Id })</h6>
+        <br />
+        <span style="margin-top: 5em; margin-right: 5px"><b>@item.Text</b></span><span style="color: crimson"><b>@item.DaysUntilDeadline()</b></span>
+                if (item.DateDue != null)
+                {
+                    <br /> @item.DateDue.Value.Date.ToString("dd.MM.yyyy")
+                }
+        <br />@Html.ActionLink("Mark as completed", "MarkAsCompleted", new { id = item.Id })
+        <br/>
     }
 </body>
 </html>

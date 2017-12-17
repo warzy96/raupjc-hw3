@@ -68,6 +68,26 @@ namespace Zadatak_2.Controllers
             return View();
         }
 
+        public IActionResult Labels()
+        {
+            return View();
+        }
+
+
+        //TODO: Check if label is in database, use apropriate actions, add a drop down view in addView for user to chose created labels
+        [HttpPost]
+        public async Task<IActionResult> Labels(LabelsViewModel label)
+        {
+            if (ModelState.IsValid)
+            {
+                var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+                var labels = await  _repository.GetLabels(new Guid(currentUser.Id));
+                TodoItemLabel addLabel = new TodoItemLabel(label.Value);
+                if(labels.Contains(addLabel))
+                return RedirectToAction("Add");
+            }
+            return View(label);
+        }
         [HttpPost]
         public async Task<IActionResult> Add(AddTodoViewModel item)
         {
